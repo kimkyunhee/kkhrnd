@@ -6,7 +6,7 @@ void Color_Sensor(void)
     //s0 s1 high high 100%
     //s2 s3 low low red
     //s2 s3 low high blue
-    //s2 s3 higf high green
+    //s2 s3 high high green
     /*---------------------------------------------------------------------*/
      
     /*----------------------Frequency scaling 100%-------------------------*/
