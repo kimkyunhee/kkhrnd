@@ -1,0 +1,104 @@
+void Color_Sensor(void)
+{
+    /*--------------------------Filter selection---------------------------*/
+    //s0 s1 low high 2%
+    //s0 s1 high low 20%
+    //s0 s1 high high 100%
+    //s2 s3 low low red
+    //s2 s3 low high blue
+    //s2 s3 higf high green
+    /*---------------------------------------------------------------------*/
+     https://github.com/kimkyunhee/kkhrnd.git
+    /*----------------------Frequency scaling 100%-------------------------*/
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_0,GPIO_PIN_SET);//s0 high
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_1,GPIO_PIN_SET);//s1 high
+    /*---------------------------------------------------------------------*/
+      if(Color_cnt <= 10000)
+      {
+        //printf("__!!Start!!-- %d %d %d\r\n", red, green, blue);
+      }     
+      else if(Color_cnt <= 20000) //red
+      {
+          HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_RESET);//s2 low
+          HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET);//s3 low
+          if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_8) == 1)
+          {
+            if(state == 0)
+            {
+              red += 1;
+              state = 1;
+            }
+          }
+          else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_8) == 0)
+          {
+            if(state == 1)
+            {
+              state = 0;
+            }
+          }
+
+       }
+       else if(Color_cnt <= 30000) //blue
+       {          
+          HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_RESET);//s2 low
+          HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);//s3 high
+          if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_8) == 1)
+          {
+            if(state == 0)
+            {
+              blue += 1;
+              state = 1;
+            }
+          }
+          else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_8) == 0)
+          {
+            if(state == 1)
+            {
+              state = 0;
+            }
+          }
+          
+       }
+       else if(Color_cnt <= 40000) //green
+       {    
+          HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_SET);//s2 high
+          HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);//s3 high         
+          if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_8) == 1)
+          {
+            if(state == 0)
+            {
+              green += 1;
+              state = 1;
+            }
+          }
+          else if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_8) == 0)
+          {
+            if(state == 1)
+            {
+              state = 0;
+            }
+          }         
+       }
+       else
+       {
+         if(red<1000) //overflow
+         {
+            if((red >= blue) && (red >= green))
+            {
+                printf("__!!red!!-- %d %d %d\r\n", red, green, blue);                
+            }
+            else if((blue > red) && (blue >= green))
+            {
+                printf("--!!blue!!-- %d %d %d\r\n",red, green, blue);
+            }
+            else
+            {
+                printf("--!!green!!-- %d %d %d\r\n",red, green, blue);
+            }
+         }          
+         red = 0;
+         blue = 0;
+         green = 0;
+         Color_cnt = 0;        
+       }
+}
