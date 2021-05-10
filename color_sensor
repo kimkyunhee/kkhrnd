@@ -8,7 +8,7 @@ void Color_Sensor(void)
     //s2 s3 low high blue
     //s2 s3 higf high green
     /*---------------------------------------------------------------------*/
-     https://github.com/kimkyunhee/kkhrnd.git
+     
     /*----------------------Frequency scaling 100%-------------------------*/
       HAL_GPIO_WritePin(GPIOB,GPIO_PIN_0,GPIO_PIN_SET);//s0 high
       HAL_GPIO_WritePin(GPIOB,GPIO_PIN_1,GPIO_PIN_SET);//s1 high
